@@ -1,4 +1,7 @@
 NTVisual
 ========
 
-Visualizing "The Black Swan"
+Visualizing mediocristan/extremistan from "The Black Swan"
+
+See it here:
+www.bpkazemi.github.io/NTVisual
