@@ -30,7 +30,8 @@ $(document).ready(function() {
 
 		// UPDATE 
 		// ------ Whenever data changes, update old elements as needed
-		circle.attr('cx', function(d) { 
+		circle.transition().duration(1000)
+		.attr('cx', function(d) { 
 			return d.cx; 
 		})
 		.attr('cy', function(d) {
@@ -44,7 +45,8 @@ $(document).ready(function() {
 		})
 		.style('stroke-width', 1);
 
-		text.attr('x', function(d) {
+		text.transition().duration(1000)
+		.attr('x', function(d) {
 			return d.cx-10;
 		})
 		.attr('y', function(d) {
@@ -60,6 +62,7 @@ $(document).ready(function() {
 		// ENTER
 		// ----- When new nodes are created
 		circle.enter().append('circle')
+		.transition().duration(325)
 		.attr('cx', function(d) { 
 			return d.cx; 
 		})
@@ -90,7 +93,11 @@ $(document).ready(function() {
 
 		// EXIT
 		// ---- When nodes are removed
-		circle.exit().remove();
+		circle.exit().transition()
+		.duration(1000)
+		.attr('r', 0)
+		.remove();
+
 		text.exit().remove();
 	}
 
