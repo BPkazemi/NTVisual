@@ -3,17 +3,16 @@
 
 /* -- Variables -- */
 /* --------------- */
-$shapeWidth: 100px;
-$shapeHeight: 100px;
 
 /* -- Colors -- */
-$lightTeal: #77dfc9;
-$lightBlue: #778ddf;
-$lightRed: #df778d;
-$lightYellow: #dfc977;
+$flatTeal: #77dfc9;
+$flatBlue: #0095F6;
+$flatRed: #df778d;
+$flatYellow: #dfc977;
+$flatGreen: #21c666;
 $purpleBlue: #764ed5;
 
-$circleBackground: $lightTeal;
+$circleBackground: $flatTeal;
 $headerBackground: $purpleBlue;
 
 /* -- Mixins -- */
@@ -22,6 +21,26 @@ $headerBackground: $purpleBlue;
 	-mox-border-radius: $radius;
 	-webkit-border-radius: $radius;
 	border-radius: $radius;
+}
+
+@mixin box-shadow($bshadow: none) {
+	-moz-box-shadow: $bshadow;
+	-webkit-box-shadow: $bshadow;
+	box-shadow: $bshadow;
+}
+
+@mixin buttonStyle($bgcolor:$flatGreen, $width:100px, $height:50px) {
+	@include box-shadow(none);
+	@include border-radius(5px);
+
+	border: none;
+	cursor: pointer;
+	background-color: $bgcolor;
+	color: #fff;
+	width: $width;
+	height: $height;
+	font-size: 18px;
+	transition: all .10s ease-in-out;
 }
 
 body {
@@ -39,23 +58,55 @@ header {
 	a {
 		text-decoration: none;
 	}
-
-	#logo {
-		float: left;
-		margin-left: 10px;
-	}
-	#links_container {
-		float: right;
-	} #home {
-		margin-right: 70px
-	}
-}
-.circle {
-	/*@include border-radius(50%);
-
-	background: $circleBackground;
-	width: $shapeWidth;
-	height: $shapeHeight;
-	display: inline-block;*/
 }
 
+#logo {
+	float: left;
+	margin-left: 10px;
+	width: 250px;
+}
+
+#links_container {
+	float: right;
+	width: 1250px;
+} #home {
+	float:right;
+	margin-right: 70px;
+}
+
+input[type="text"] {
+	line-height: 1.5em;
+	border-radius: 3px;
+	border: 1px solid;
+	padding: 5px;
+	outline: none;
+	font-size: 14px;
+}
+
+#num-nodes {
+	margin-left: 15px;
+}
+
+.btn-render {
+	@include buttonStyle($flatGreen, 50px, 35px);
+} 
+.btn-render:hover {
+	background-color: darken( $flatGreen, 10% );
+}
+.btn-render:active {
+	background-color: darken( $flatGreen, 20% );
+}
+
+.button-wrapper {
+	display: inline-block;
+	float: left;
+}
+.btn-primary {
+	@include buttonStyle($flatBlue, 250px, 50px);
+}
+.btn-primary:hover {
+	background-color: darken( $flatBlue, 10% );
+}
+.btn-primary:active {
+	background-color: darken( $flatBlue, 20% );
+}

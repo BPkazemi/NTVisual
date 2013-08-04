@@ -1,7 +1,8 @@
 $(document).ready(function() {
 	var svgHeight = window.innerHeight/1.1,
 	svgWidth = window.innerWidth,
-	numNodes = 300,
+	numNodes = 100,
+	totalWeight = 0, averageWeight = 0,
 	min=1000, max=0,
 	nodes;
 
@@ -12,21 +13,35 @@ $(document).ready(function() {
 	// Generate an array of length num containing objects w/ circle properties
 	function generateNodes(num) {
 		var newNodes = d3.range(num).map(function() {
-			return {
+			var person = {
 				radius: d3.random.normal(179.7, 35)()/10,
-				cx: Math.random() * svgWidth-50,
-				cy: Math.random() * svgHeight-50
+				cx: Math.random() * svgWidth-50 + 55,
+				cy: Math.random() * svgHeight-50 + 55
 			}
+			totalWeight += person.radius*10;
+			return person;
+		});
+
+		// So larger radii overlay smaller radii
+		newNodes.sort(function(a, b) {
+			if(a.radius > b.radius) {
+				return 1;
+			}
+			if(a.radius < b.radius) {
+				return -1;
+			}
+			return 0;
 		});
 		return newNodes;
 	}
 
-	function update(data) {
+	function update(data, enterTransitionTime) {
 		// Data join - binding the circle's data to elements
 		var circle = svg.selectAll('circle')
 			.data(data),
 		text = svg.selectAll('text')
-			.data(data);
+			.data(data),
+		enterTime = enterTransitionTime || 325;
 
 		// UPDATE 
 		// ------ Whenever data changes, update old elements as needed
@@ -47,10 +62,10 @@ $(document).ready(function() {
 
 		text.transition().duration(1000)
 		.attr('x', function(d) {
-			return d.cx-10;
+			return d.cx-18;
 		})
 		.attr('y', function(d) {
-			return d.cy;
+			return d.cy+5;
 		})
 		.text(function(d) {
 			min = Math.min(min, d.radius);
@@ -62,7 +77,8 @@ $(document).ready(function() {
 		// ENTER
 		// ----- When new nodes are created
 		circle.enter().append('circle')
-		.transition().duration(325)
+		.attr('r', 0)
+		.transition().duration(enterTime)
 		.attr('cx', function(d) { 
 			return d.cx; 
 		})
@@ -78,12 +94,15 @@ $(document).ready(function() {
 		.style('stroke-width', 1);
 
 		text.enter().append('text')
+		.style('font-size', 0)
+		.transition().duration(enterTime)
 		.attr('x', function(d) {
-			return d.cx-10;
+			return d.cx-18;
 		})
 		.attr('y', function(d) {
-			return d.cy;
+			return d.cy+5;
 		})
+		.style('font-size', 15)
 		.text(function(d) {
 			min = Math.min(min, d.radius);
 			max = Math.max(max, d.radius);
@@ -98,20 +117,67 @@ $(document).ready(function() {
 		.attr('r', 0)
 		.remove();
 
-		text.exit().remove();
+		text.exit().transition()
+		.duration(1000)
+		.style("font-size", function() { return '0px';})
+		.remove();
+	}
+
+	function calcAverage(sum, count) {
+		// Calculate average weight
+		averageWeight = sum/count;
+		$('.average-weight').html(Math.floor(averageWeight) + ' lbs');
+	}
+
+	function renderMediocristan() {
+		min = 1000, max = 0, totalWeight = 0, averageWeight = 0;
+
+		var numNodes = $('#num-nodes').val(),
+		newData = generateNodes(numNodes);
+		calcAverage(totalWeight, numNodes);
+
+		update(newData);
+	}
+	function renderExtremistan() {
+		min = 1000, max = 0, totalWeight = 0, averageWeight = 0;
+
+		var totalNodes = $('#num-nodes').val(),
+		numOnePercent = Math.floor(totalNodes * 0.01) || 1,
+		num99Percent = totalNodes-numOnePercent,
+
+		plebianArray = generateNodes(num99Percent),
+		richArray = d3.range(numOnePercent).map(function() {
+			var fatPerson = { 
+				radius: d3.random.normal(45000, 5000)()/10, 
+				cx: Math.random() * svgWidth-50 + 55,
+				cy: Math.random() * svgHeight-50 + 55 
+			}
+			totalWeight += fatPerson.radius;
+			return fatPerson;
+		}),
+
+		newData = plebianArray.concat(richArray);
+
+		calcAverage(totalWeight, totalNodes);
+		console.log(numOnePercent);
+		// Slow down Billy G!! 2s is enough to dramatize the impact.
+		update(newData, 2000);
 	}
 
 	// Render initially
 	update(generateNodes(numNodes));
-	console.log(min*10, max*10);
+
+	// Click Listeners
+	// ---------------
 	$('#render-btn').on('click', function() {
-		min = 1000, max = 0;
-		numNodes = $('#num-nodes').val();
-		var newData = generateNodes(numNodes);
-		
-		update(newData);
-		console.log(min*10, max*10);
+		renderMediocristan();
 	})
+	$('.mediocristan').on('click', function() {
+		renderMediocristan();
+	});
+	$('.extremistan').on('click', function() {
+		renderExtremistan();
+	});
 
 
 	// -- Awesome CSS circle background --
@@ -141,8 +207,3 @@ $(document).ready(function() {
 	// }
 	// -----------------------------------
 });
-
-/*
-	To generate a more random distribution, recall the SO answer of how adding 
-	random()+random() yields closer to a normal distribution
-*/

@@ -17,11 +17,17 @@
 	<header>
 		<div id="logo">
 			<a href="#">Visualizing Nassim Taleb</a>
-			<button id="render-btn">Render</button>
-			<input type="text" id="num-nodes" value="300"></input>
 		</div>
 		<div id="links_container">
-			<a href="#" id="home">Home</a>
+			<div class="button-wrapper">
+				<input type="button" class="btn-primary mediocristan" value="Mediocristan" />
+				<input type="button" class="btn-primary extremistan" value="Extremistan" />
+
+				<input type="text" id="num-nodes" value="100"></input>
+				<button  class="btn-render" id="render-btn">Go</button>
+				Average: <span class="average-weight"></span>
+			</div>
+			<a href="http://bpkazemi.github.io" id="home">Home</a>
 			<!-- Some "Recommend" button, like Medium -->
 		</div>
 	</header>
