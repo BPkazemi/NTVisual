@@ -3,6 +3,11 @@
 	<title>BPkazemi - Visualizing Nassim Taleb</title>
 
 	<!-- ~~~~~~~~~~ Stylesheets ~~~~~~~~~~~ -->
+	<!-- Bootstrap 3 -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Avgrund -->
+	<link rel="stylesheet" type="text/css" href="./stylesheets/css/avgrund.css">
+	<!-- Application Stylesheets -->
 	<link rel="stylesheet" type="text/css" href="./stylesheets/css/main.css">
 
 	<!-- ~~~~~~~~~~~ Scripts ~~~~~~~~~~~ -->
@@ -10,11 +15,57 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 	<!-- D3.js -->
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<!-- Bootstrap 3 -->
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+	<!-- Avgrund -->
+	<script type="text/javascript" src="./js/libs/avgrund.js"></script>
 	<!-- Application Scripts -->
 	<script type="text/javascript" src="./js/main.js"></script>
 </head>
 <body>
-	<header>
+	<!-- Navbar -->
+	<div class="row nvbr">
+		<div class="col-lg-3 left">
+			<a class="project-title" href="#">Visualizing Nassim Taleb</a>
+		</div>
+		<div class="col-lg-6 middle"> <!-- Filler -->
+		</div>
+		<div class="col-lg-3 right">
+			<a class="home" href="http://bpkazemi.github.io">Home</a>
+		</div>
+	</div>
+
+	<!-- User Controls -->
+	<div class="button-wrapper">
+		<span class="user-controls">
+			Population:<input type="text" id="num-nodes" value="100"></input>
+			<input type="button" class="btn-primary mediocristan" value="Mediocristan" />
+			<input type="button" class="btn-primary extremistan" value="Extremistan" />
+
+			<div class="description">What is this?</div>
+			<aside id="default-popup" class="avgrund-popup">
+				<h2>What is this?</h2>
+				<p>
+					Nassim Taleb, in <em>The Black Swan</em>, used two hypothetical cities to make a point - mediocristan and extremistan.  In mediocristan, wealth is not scalable (follows a normal distribution), so the difference between the richest few persons and the middle class is relatively insignifant. So much so that if you were to take an average wealth of the population, you could reasonably expect it to accurately represent the average person's income.  In extremistan, however, wealth follows a power law distribution - so the richest 1% are significantly more wealthy than the other 99%. If you were to take an average wealth of extremistan, you would not get a reasonably accurate representation of each person's wealth since the 1% skew it so much. This is a visual representation of "extremistan" (which introduces 1% of super-rich) and "mediocristan".  However, the wealth is represented as weight!
+				</p>
+				<button class="close">Close</button>
+			</aside>
+
+		</span>
+
+		<!-- <button  class="btn-render" id="render-btn">Go</button> -->
+		<span class="stats-wrapper">
+			Average: <span class="stats" id="average-weight"></span>
+			Min: <span class="stats" id="min"></span>
+			Max: <span class="stats" id="max"></span>
+		</span>
+	</div>
+
+	<!-- Visualization -->
+	<div id="shapesHolder"></div>
+
+
+	<!-- <header>
 		<div id="logo">
 			<a href="#">Visualizing Nassim Taleb</a>
 		</div>
@@ -28,13 +79,12 @@
 				Average: <span class="average-weight"></span>
 			</div>
 			<a href="http://bpkazemi.github.io" id="home">Home</a>
-			<!-- Some "Recommend" button, like Medium -->
+			<!-- Some "Recommend" button, like Medium 
 		</div>
-	</header>
+	</header> -->
 
 	<br>
 	<br>
 
-	<div id="shapesHolder"></div>
 </body>
 </html>

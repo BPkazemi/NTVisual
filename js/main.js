@@ -3,25 +3,31 @@ $(document).ready(function() {
 	svgWidth = window.innerWidth,
 	numNodes = 100,
 	totalWeight = 0, averageWeight = 0,
-	min=1000, max=0,
+	min=100000, max=0,
 	nodes;
 
 	var svg = d3.select("body").append("svg")
 		.attr("width", svgWidth)
 		.attr("height", svgHeight);
 
+	function getRandomArbitrary(min, max) {
+		return (Math.random() * (max-min) + min);
+	}
+
 	// Generate an array of length num containing objects w/ circle properties
 	function generateNodes(num) {
+		totalWeight = 0, min = 100000, max = 0;
 		var newNodes = d3.range(num).map(function() {
 			var person = {
 				radius: d3.random.normal(179.7, 35)()/10,
-				cx: Math.random() * svgWidth-50 + 55,
-				cy: Math.random() * svgHeight-50 + 55
+				cx: getRandomArbitrary(50, svgWidth-70),
+				cy: getRandomArbitrary(50, svgHeight-70)
 			}
 			totalWeight += person.radius*10;
+			min = Math.min(min, person.radius*10);
+			max = Math.max(max, person.radius*10);
 			return person;
 		});
-
 		// So larger radii overlay smaller radii
 		newNodes.sort(function(a, b) {
 			if(a.radius > b.radius) {
@@ -33,19 +39,20 @@ $(document).ready(function() {
 			return 0;
 		});
 		return newNodes;
+
 	}
 
-	function update(data, enterTransitionTime) {
+	function update(data, transitionTime) {
 		// Data join - binding the circle's data to elements
 		var circle = svg.selectAll('circle')
 			.data(data),
 		text = svg.selectAll('text')
 			.data(data),
-		enterTime = enterTransitionTime || 325;
+		transTime = transitionTime || 750;
 
 		// UPDATE 
 		// ------ Whenever data changes, update old elements as needed
-		circle.transition().duration(1000)
+		circle.transition().duration(transTime)
 		.attr('cx', function(d) { 
 			return d.cx; 
 		})
@@ -60,7 +67,7 @@ $(document).ready(function() {
 		})
 		.style('stroke-width', 1);
 
-		text.transition().duration(1000)
+		text.transition().duration(transTime)
 		.attr('x', function(d) {
 			return d.cx-18;
 		})
@@ -78,7 +85,7 @@ $(document).ready(function() {
 		// ----- When new nodes are created
 		circle.enter().append('circle')
 		.attr('r', 0)
-		.transition().duration(enterTime)
+		.transition().duration(transTime)
 		.attr('cx', function(d) { 
 			return d.cx; 
 		})
@@ -95,7 +102,7 @@ $(document).ready(function() {
 
 		text.enter().append('text')
 		.style('font-size', 0)
-		.transition().duration(enterTime)
+		.transition().duration(transTime)
 		.attr('x', function(d) {
 			return d.cx-18;
 		})
@@ -124,13 +131,16 @@ $(document).ready(function() {
 	}
 
 	function calcAverage(sum, count) {
-		// Calculate average weight
+		// average weight
 		averageWeight = sum/count;
-		$('.average-weight').html(Math.floor(averageWeight) + ' lbs');
+		$('#average-weight').html(Math.floor(averageWeight) + ' lbs, ');
+		// min, max
+		$('#min').html(Math.floor(min) + ' lbs, ');
+		$('#max').html(Math.floor(max) + ' lbs');
 	}
 
 	function renderMediocristan() {
-		min = 1000, max = 0, totalWeight = 0, averageWeight = 0;
+		totalWeight = 0, averageWeight = 0;
 
 		var numNodes = $('#num-nodes').val(),
 		newData = generateNodes(numNodes);
@@ -139,7 +149,7 @@ $(document).ready(function() {
 		update(newData);
 	}
 	function renderExtremistan() {
-		min = 1000, max = 0, totalWeight = 0, averageWeight = 0;
+		min = 100000, max = 0, averageWeight = 0;
 
 		var totalNodes = $('#num-nodes').val(),
 		numOnePercent = Math.floor(totalNodes * 0.01) || 1,
@@ -147,19 +157,20 @@ $(document).ready(function() {
 
 		plebianArray = generateNodes(num99Percent),
 		richArray = d3.range(numOnePercent).map(function() {
-			var fatPerson = { 
+			var richPerson = { 
 				radius: d3.random.normal(45000, 5000)()/10, 
-				cx: Math.random() * svgWidth-50 + 55,
-				cy: Math.random() * svgHeight-50 + 55 
+				cx: getRandomArbitrary(50, svgWidth-70),
+				cy: getRandomArbitrary(50, svgHeight-70) 
 			}
-			totalWeight += fatPerson.radius;
-			return fatPerson;
-		}),
+			totalWeight += richPerson.radius * 10;
+			min = Math.min(min, richPerson.radius*10);
+			max = Math.max(max, richPerson.radius*10);
+			return richPerson;
+		});
 
-		newData = plebianArray.concat(richArray);
+		newData = richArray.concat(plebianArray);
 
 		calcAverage(totalWeight, totalNodes);
-		console.log(numOnePercent);
 		// Slow down Billy G!! 2s is enough to dramatize the impact.
 		update(newData, 2000);
 	}
@@ -178,6 +189,14 @@ $(document).ready(function() {
 	$('.extremistan').on('click', function() {
 		renderExtremistan();
 	});
+
+	// Avgrund Explanation
+	$('.description').on('click', function() {
+		Avgrund.show('#default-popup');
+	});
+	$('.close').on('click', function() {
+		Avgrund.hide();
+	})
 
 
 	// -- Awesome CSS circle background --
