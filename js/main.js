@@ -130,7 +130,7 @@ $(document).ready(function() {
 		.remove();
 	}
 
-	function calcAverage(sum, count) {
+	function calcStats(sum, count) {
 		// average weight
 		averageWeight = sum/count;
 		$('#average-weight').html(Math.floor(averageWeight) + ' lbs, ');
@@ -144,7 +144,7 @@ $(document).ready(function() {
 
 		var numNodes = $('#num-nodes').val(),
 		newData = generateNodes(numNodes);
-		calcAverage(totalWeight, numNodes);
+		calcStats(totalWeight, numNodes);
 
 		update(newData);
 	}
@@ -170,7 +170,7 @@ $(document).ready(function() {
 
 		newData = richArray.concat(plebianArray);
 
-		calcAverage(totalWeight, totalNodes);
+		calcStats(totalWeight, totalNodes);
 		// Slow down Billy G!! 2s is enough to dramatize the impact.
 		update(newData, 2000);
 	}

@@ -1,7 +1,6 @@
 NTVisual Todo
 -------------
-1) Test that the 1% is accurately loading
-2) Billy G should "eat up" all the 99%
+1) -- Test that the 1% is accurately loading
+2) -- Billy G should "eat up" all the 99%
 3) Pull data from reliable sources - double check the difference b/w 1% vs 99%
-4) Tell people wtf is going on.
-5) UI fixes.
+4) UI fixes.

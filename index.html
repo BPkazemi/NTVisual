@@ -46,7 +46,15 @@
 			<aside id="default-popup" class="avgrund-popup">
 				<h2>What is this?</h2>
 				<p>
-					Nassim Taleb, in <em>The Black Swan</em>, used two hypothetical cities to make a point - mediocristan and extremistan.  In mediocristan, wealth is not scalable (follows a normal distribution), so the difference between the richest few persons and the middle class is relatively insignifant. So much so that if you were to take an average wealth of the population, you could reasonably expect it to accurately represent the average person's income.  In extremistan, however, wealth follows a power law distribution - so the richest 1% are significantly more wealthy than the other 99%. If you were to take an average wealth of extremistan, you would not get a reasonably accurate representation of each person's wealth since the 1% skew it so much. This is a visual representation of "extremistan" (which introduces 1% of super-rich) and "mediocristan".  However, the wealth is represented as weight!
+					In <em>The Black Swan</em>, Nassim Taleb describes two societies, mediocristan and extremistan.<br><br>
+					In <b>Mediocristan</b>, wealth is distributed normally, with extremes being highly unlikely.<br>
+					In <b>Extremistan</b>, wealth is distributed more like a power-law, with the top 1% holding the vast majority of wealth.<br>
+					This page attempts to visualize those two societies! The twist is that wealth is represented as weight. Each circle represents a person, with the number being their weight (aka 'wealth'). Toggle between the two and see the difference!<br>
+					<br>
+					Note: The data is being conjured arbitrarily. My next goal is to pull data from a real-world source (census data).<br>
+					<br>
+					More details:
+					Toggling Extremistan creates the '1%' and '99%' - so that 1% of your population size will become super wealthy, and the other 99% remain 'commonfolk'.
 				</p>
 				<button class="close">Close</button>
 			</aside>
@@ -63,28 +71,5 @@
 
 	<!-- Visualization -->
 	<div id="shapesHolder"></div>
-
-
-	<!-- <header>
-		<div id="logo">
-			<a href="#">Visualizing Nassim Taleb</a>
-		</div>
-		<div id="links_container">
-			<div class="button-wrapper">
-				<input type="button" class="btn-primary mediocristan" value="Mediocristan" />
-				<input type="button" class="btn-primary extremistan" value="Extremistan" />
-
-				<input type="text" id="num-nodes" value="100"></input>
-				<button  class="btn-render" id="render-btn">Go</button>
-				Average: <span class="average-weight"></span>
-			</div>
-			<a href="http://bpkazemi.github.io" id="home">Home</a>
-			<!-- Some "Recommend" button, like Medium 
-		</div>
-	</header> -->
-
-	<br>
-	<br>
-
 </body>
 </html>
