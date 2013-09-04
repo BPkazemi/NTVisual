@@ -46,6 +46,11 @@ $headerBackground: $purpleBlue;
 body {
 	letter-spacing: 2px;
 	font-family: Verdana;
+
+	.avgrund-popup > h2 {
+		margin: 0 0 20px 0;
+		text-align: center;
+	}
 }
 
 header {
