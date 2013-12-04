@@ -188,27 +188,8 @@ $(document).ready(function() {
 		var numNodes = $('#num-nodes').val();
 		var newData = generateNodes(numNodes);
 
-		// var totalNodes = $('#num-nodes').val(),
-		// numOnePercent = Math.floor(totalNodes * 0.01) || 1,
-		// num99Percent = totalNodes-numOnePercent,
-
-		// plebianArray = generateNodes(num99Percent),
-		// richArray = d3.range(numOnePercent).map(function() {
-		// 	var richPerson = { 
-		// 		radius: d3.random.normal(45000, 5000)()/10, 
-		// 		cx: getRandomArbitrary(50, svgWidth-70),
-		// 		cy: getRandomArbitrary(50, svgHeight-70) 
-		// 	}
-		// 	totalWeight += richPerson.radius * 10;
-		// 	min = Math.min(min, richPerson.radius*10);
-		// 	max = Math.max(max, richPerson.radius*10);
-		// 	return richPerson;
-		// });
-
-		// newData = richArray.concat(plebianArray);
-
 		calcStats(totalWeight, numNodes);
-		// Slow down Billy G!! 2s is enough to dramatize the impact.
+		// 2s is enough to dramatize the impact.
 		update(newData, 2000);
 	}
 
