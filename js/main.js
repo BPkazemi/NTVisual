@@ -4,42 +4,73 @@ $(document).ready(function() {
 	numNodes = 100,
 	totalWeight = 0, averageWeight = 0,
 	min=100000, max=0,
-	nodes;
+	nodes,
+	giniDenmark = 0.24, giniUS = 0.477, giniSouthAfrica = 0.631, giniWorld = 0.68,
+	giniSmall = giniDenmark, giniLarge = giniSouthAfrica,
+	currentGini = giniSmall,
+	curStep;
+
+	// ======== Gini Coefficients ==========
+	// The Gini coefficient is the area between 
+	// the line of perfect equality and the line of perfect inequality.
+	// Given A and B, Gini = A/(A+B)
+	// L(F) = W, where F is the percent of population and W is the wealth
+
+	// A note on the limitations of Gini Coefficients - they do not explain the differences, only report them
+	// Moreover, since the Gini coefficient is a relative measure, it doesn't take into account absolute wealth
+
+	// Given G, we know p = -2G/(G-1), and y = x^p
 
 	var svg = d3.select("body").append("svg")
 		.attr("width", svgWidth)
 		.attr("height", svgHeight);
 
+	// Generate a random number that is between min and max
 	function getRandomArbitrary(min, max) {
 		return (Math.random() * (max-min) + min);
+	}
+
+	// Givien gini coefficient G, we know p = -2G/(G-1) and y=x^p
+	function calculateStep() {
+		return (-2*currentGini)/(currentGini-1);
 	}
 
 	// Generate an array of length num containing objects w/ circle properties
 	function generateNodes(num) {
 		totalWeight = 0, min = 100000, max = 0;
-		var newNodes = d3.range(num).map(function() {
+		curStep = calculateStep();
+
+		// x corresponds to 'the bottom x%' of the population wealth
+		var newNodes = d3.range(num).map(function(val, index) {
+			// Since getRandomArbitrary may "weigh" certain x's more
+			// heavily than others, we end up with a non-perfect
+			// distribution. However, getRandomArbitrary works
+			// better for populations less than 100, and is nearly
+			// as accurate. More nodes = more accuracy.
+			var x = getRandomArbitrary(0.001, 1);
+			var y = Math.pow(x, curStep); // y=x^p
+			console.log('index: ' + index + ', x: ' + x + ', p: ' + curStep + ', y: ' + y);
 			var person = {
-				radius: d3.random.normal(179.7, 35)()/10,
+				radius: y * 100,
 				cx: getRandomArbitrary(50, svgWidth-70),
 				cy: getRandomArbitrary(50, svgHeight-70)
 			}
-			totalWeight += person.radius*10;
-			min = Math.min(min, person.radius*10);
-			max = Math.max(max, person.radius*10);
+			totalWeight += person.radius;
+			min = Math.min(min, person.radius);
+			max = Math.max(max, person.radius);
 			return person;
 		});
-		// So larger radii overlay smaller radii
+		// So smaller radii overlay larger radii
 		newNodes.sort(function(a, b) {
 			if(a.radius > b.radius) {
-				return 1;
+				return -1;
 			}
 			if(a.radius < b.radius) {
-				return -1;
+				return 1;
 			}
 			return 0;
 		});
 		return newNodes;
-
 	}
 
 	function update(data, transitionTime) {
@@ -51,7 +82,7 @@ $(document).ready(function() {
 		transTime = transitionTime || 750;
 
 		// UPDATE 
-		// ------ Whenever data changes, update old elements as needed
+		// ------ Whenever data changes, update old elements as needed 
 		circle.transition().duration(transTime)
 		.attr('cx', function(d) { 
 			return d.cx; 
@@ -63,7 +94,7 @@ $(document).ready(function() {
 			return d.radius;
 		})
 		.attr('fill', function() {
-			return 'hsl(' + Math.random()*365 + ', 75%, 75%)';
+			return 'hsl(' + Math.random()*365 + ', 100%, 70%)';
 		})
 		.style('stroke-width', 1);
 
@@ -78,7 +109,7 @@ $(document).ready(function() {
 			min = Math.min(min, d.radius);
 			max = Math.max(max, d.radius);
 
-			return Math.floor(d.radius*10);
+			return Math.floor(d.radius);
 		});
 
 		// ENTER
@@ -96,7 +127,7 @@ $(document).ready(function() {
 			return d.radius;
 		})
 		.attr('fill', function() {
-			return 'hsl(' + Math.random()*365 + ', 75%, 75%)';
+			return 'hsl(' + Math.random()*365 + ', 100%, 70%)';
 		})
 		.style('stroke-width', 1);
 
@@ -114,7 +145,7 @@ $(document).ready(function() {
 			min = Math.min(min, d.radius);
 			max = Math.max(max, d.radius);
 
-			return Math.floor(d.radius*10);
+			return Math.floor(d.radius);
 		});
 
 		// EXIT
@@ -141,36 +172,42 @@ $(document).ready(function() {
 
 	function renderMediocristan() {
 		totalWeight = 0, averageWeight = 0;
+		currentGini = giniSmall;
 
-		var numNodes = $('#num-nodes').val(),
-		newData = generateNodes(numNodes);
+		var numNodes = $('#num-nodes').val();
+		var newData = generateNodes(numNodes);
 		calcStats(totalWeight, numNodes);
 
 		update(newData);
 	}
 	function renderExtremistan() {
+		totalWeight = 0, averageWeight = 0;
 		min = 100000, max = 0, averageWeight = 0;
+		currentGini = giniLarge;
 
-		var totalNodes = $('#num-nodes').val(),
-		numOnePercent = Math.floor(totalNodes * 0.01) || 1,
-		num99Percent = totalNodes-numOnePercent,
+		var numNodes = $('#num-nodes').val();
+		var newData = generateNodes(numNodes);
 
-		plebianArray = generateNodes(num99Percent),
-		richArray = d3.range(numOnePercent).map(function() {
-			var richPerson = { 
-				radius: d3.random.normal(45000, 5000)()/10, 
-				cx: getRandomArbitrary(50, svgWidth-70),
-				cy: getRandomArbitrary(50, svgHeight-70) 
-			}
-			totalWeight += richPerson.radius * 10;
-			min = Math.min(min, richPerson.radius*10);
-			max = Math.max(max, richPerson.radius*10);
-			return richPerson;
-		});
+		// var totalNodes = $('#num-nodes').val(),
+		// numOnePercent = Math.floor(totalNodes * 0.01) || 1,
+		// num99Percent = totalNodes-numOnePercent,
 
-		newData = richArray.concat(plebianArray);
+		// plebianArray = generateNodes(num99Percent),
+		// richArray = d3.range(numOnePercent).map(function() {
+		// 	var richPerson = { 
+		// 		radius: d3.random.normal(45000, 5000)()/10, 
+		// 		cx: getRandomArbitrary(50, svgWidth-70),
+		// 		cy: getRandomArbitrary(50, svgHeight-70) 
+		// 	}
+		// 	totalWeight += richPerson.radius * 10;
+		// 	min = Math.min(min, richPerson.radius*10);
+		// 	max = Math.max(max, richPerson.radius*10);
+		// 	return richPerson;
+		// });
 
-		calcStats(totalWeight, totalNodes);
+		// newData = richArray.concat(plebianArray);
+
+		calcStats(totalWeight, numNodes);
 		// Slow down Billy G!! 2s is enough to dramatize the impact.
 		update(newData, 2000);
 	}
@@ -180,9 +217,6 @@ $(document).ready(function() {
 
 	// Click Listeners
 	// ---------------
-	$('#render-btn').on('click', function() {
-		renderMediocristan();
-	})
 	$('.mediocristan').on('click', function() {
 		renderMediocristan();
 	});

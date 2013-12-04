@@ -47,14 +47,15 @@
 				<h2>What is this?</h2>
 				<p>
 					In <em>The Black Swan</em>, Nassim Taleb describes two societies, mediocristan and extremistan.<br><br>
-					In <b>Mediocristan</b>, wealth is distributed normally, with extremes being highly unlikely.<br>
-					In <b>Extremistan</b>, wealth is distributed more like a power-law, with the top 1% holding the vast majority of wealth.<br>
-					This page attempts to visualize those two societies! The key is that <b>wealth is represented as weight</b>. Each circle represents a person, with the number being their weight (aka 'wealth'). Toggle between the two and see the difference!<br>
+					In <b>Mediocristan</b>, wealth is distributed normally, with extremes being highly unlikely. I've represented Mediocristan as Denmark, which has a relatively low Gini coefficient (G=0.24).<br>
+					In <b>Extremistan</b>, wealth is distributed more like a power-law, with the top percentiles holding the vast majority of the wealth. I've represented Extremistan as South Africa, which has a relatively high Gini coefficient (G=0.631).<br>
 					<br>
-					Note: The data is being conjured arbitrarily. My next goal is to pull data from a real-world source (census data).<br>
+					The key is that <b>wealth ownership is represented as weight</b>. That is, each circle represents a person, and the corresponding number their weight (aka 'wealth ownership'). Toggle between the two and see the difference!<br>
+					<br>
+					Note: The visualization essentially represents a Lorenz curve, which means a circle's radius represents not absolute wealth ownership, but <em>relative</em> wealth ownership. Thus, the visualization can only highlight wealth inequality, but gives no insight into absolute wealth. Watch the average to get a sense of the population's inequality.<br>
 					<br>
 					More details:
-					Toggling Extremistan creates the '1%' and '99%' - so that 1% of your population size will become super wealthy, and the other 99% remain 'average'.
+					Everything is being rendered client-side. Check out the source and mess with the Gini coefficients!
 				</p>
 				<button class="close">Close</button>
 			</aside>

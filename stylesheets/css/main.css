@@ -5,7 +5,7 @@
 /* -- Mixins -- */
 /* ------------ */
 body {
-  letter-spacing: 2px;
+  letter-spacing: 0px;
   font-family: Verdana; }
   body .avgrund-popup > h2 {
     margin: 0 0 20px 0;
