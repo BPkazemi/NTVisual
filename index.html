@@ -4,76 +4,25 @@
 
 	<!-- ~~~~~~~~~~ Stylesheets ~~~~~~~~~~~ -->
 	<!-- Bootstrap 3 -->
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet">
-	<!-- Avgrund -->
-	<link rel="stylesheet" type="text/css" href="./stylesheets/css/avgrund.css">
-	<!-- Application Stylesheets -->
-	<link rel="stylesheet" type="text/css" href="./stylesheets/css/main.css">
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- ~~~~~~~~~~~ Scripts ~~~~~~~~~~~ -->
 	<!-- jQuery -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-	<!-- D3.js -->
-	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<!-- Bootstrap 3 -->
-	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
-	<!-- Avgrund -->
-	<script type="text/javascript" src="./js/libs/avgrund.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 	<!-- Application Scripts -->
 	<script type="text/javascript" src="./js/main.js"></script>
 </head>
 <body>
-	<!-- Navbar -->
-	<div class="row nvbr">
-		<div class="col-lg-3 left">
-			<a class="project-title" href="#">Visualizing Nassim Taleb</a>
-		</div>
-		<div class="col-lg-6 middle"> <!-- Filler -->
-		</div>
-		<div class="col-lg-3 right">
-			<a class="home" href="http://bpourkazemi.com">Home</a>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-6 col-xs-offset-3">
+				<h1>
+					The visualization is now on Heroku: <a href="http://blackswan.bpourkazemi.com">blackswan.bpourkazemi.com</a>
+				</h1>
+			</div>
 		</div>
 	</div>
-
-	<!-- User Controls -->
-	<div class="button-wrapper">
-		<span class="user-controls">
-			Population:<input type="text" id="num-nodes" value="100"></input>
-			<input type="button" class="btn-primary mediocristan" value="Mediocristan" />
-			<input type="button" class="btn-primary extremistan" value="Extremistan" />
-
-			<div class="description">What is this?</div>
-			<aside id="default-popup" class="avgrund-popup">
-				<h2>What is this?</h2>
-				<p>
-					In <em>The Black Swan</em>, Nassim Taleb describes two societies, mediocristan and extremistan.<br><br>
-					In <b>Mediocristan</b>, wealth is distributed normally, with extremes being highly unlikely. I've represented Mediocristan as Denmark, which has a relatively low Gini coefficient (G=0.24).<br>
-					In <b>Extremistan</b>, wealth is distributed more like a power-law, with the top percentiles holding the vast majority of the wealth. I've represented Extremistan as South Africa, which has a relatively high Gini coefficient (G=0.631).<br>
-					<br>
-					The key is that <b>wealth ownership is represented as weight</b>. That is, each circle represents a person, and the corresponding number their weight (aka 'wealth ownership'). Toggle between the two and see the difference!<br>
-					<br>
-					Note: The visualization essentially represents a Lorenz curve, which means a circle's radius represents not absolute wealth ownership, but <em>relative</em> wealth ownership. Thus, the visualization can only highlight wealth inequality, but gives no insight into absolute wealth. Watch the average to get a sense of the population's inequality.<br>
-					<br>
-					More details:
-					Everything is being rendered client-side. Check out the source and mess with the Gini coefficients!
-				</p>
-				<button class="close">Close</button>
-			</aside>
-
-		</span>
-
-		<!-- <button  class="btn-render" id="render-btn">Go</button> -->
-		<span class="stats-wrapper">
-			Average: <span class="stats" id="average-weight"></span>
-			Min: <span class="stats" id="min"></span>
-			Max: <span class="stats" id="max"></span>
-		</span>
-	</div>
-
-	<!-- Visualization -->
-	<div id="shapesHolder"></div>
 </body>
 </html>
-
-
-<script>
